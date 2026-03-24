@@ -71,7 +71,7 @@ Infraestrutura (Persistência, Mensageria, Outbox)
 | **CashFlow.AppHost** | .NET Aspire 13 | Orquestração local (Docker Compose) |
 | **Tests** | xUnit 2.9, FluentAssertions | Testes unitários e integração |
 
-Para mais detalhes, consulte [docs/architecture.md](docs/architecture.md).
+Para mais detalhes, consulte [docs/architecture.md](docs/architecture.md). Os diagramas C4 interativos estão disponíveis em [docs/c4-diagrams.drawio](docs/c4-diagrams.drawio) (importar no [draw.io](https://draw.io)).
 
 ---
 
@@ -292,6 +292,7 @@ Abrir no navegador para visualizar detalhes de cobertura por arquivo.
 | Arquivo | Conteúdo |
 |---------|----------|
 | **[docs/architecture.md](docs/architecture.md)** | Visão detalhada de arquitetura, componentes, fluxos, padrões |
+| **[docs/c4-diagrams.drawio](docs/c4-diagrams.drawio)** | Diagramas C4 (Contexto, Containers, Componentes) — importar no draw.io |
 | **[docs/adrs.md](docs/adrs.md)** | Architecture Decision Records (decisões técnicas e trade-offs) |
 | **[docs/gaps-and-roadmap.md](docs/gaps-and-roadmap.md)** | Lacunas atuais, riscos, melhorias futuras |
 | **[README.md](README.md)** | Este arquivo |
