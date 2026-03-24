@@ -44,10 +44,16 @@ jobs:
           -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
     
     - name: 📊 Generate coverage report
-      uses: irongut/OpenCoverToCoberturaConverter@v2.1
-      with:
-        input: coverage/**/coverage.cobertura.xml
-        output: coverage/coverage.xml
+      run: |
+        mkdir -p coverage
+        COVERAGE_FILE=$(find coverage -type f -name "coverage.cobertura.xml" | head -n 1)
+        if [ -n "$COVERAGE_FILE" ]; then
+          cp "$COVERAGE_FILE" coverage/coverage.xml
+          echo "Coverage file generated at coverage/coverage.xml"
+        else
+          echo "No coverage.cobertura.xml file found"
+          exit 1
+        fi
       continue-on-error: true
     
     - name: 📈 Code coverage report
@@ -163,12 +169,25 @@ jobs:
     - name: 📥 Download coverage artifacts
       uses: actions/download-artifact@v4
       with:
-        name: test-results-10.0.x
-        path: ./coverage
+        path: ./artifacts
       continue-on-error: true
+
+    - name: 🔎 Locate coverage file
+      id: locate-coverage
+      run: |
+        mkdir -p ./coverage
+        COVERAGE_FILE=$(find ./artifacts -type f \( -name "coverage.xml" -o -name "coverage.cobertura.xml" \) | head -n 1)
+        if [ -n "$COVERAGE_FILE" ]; then
+          cp "$COVERAGE_FILE" ./coverage/coverage.xml
+          echo "found=true" >> $GITHUB_OUTPUT
+          echo "Coverage file found: $COVERAGE_FILE"
+        else
+          echo "found=false" >> $GITHUB_OUTPUT
+          echo "No coverage file found in downloaded artifacts"
+        fi
     
     - name: ✅ Check coverage threshold
-      if: hashFiles('./coverage/coverage.xml') != ''
+      if: steps.locate-coverage.outputs.found == 'true'
       run: |
         echo "## 🎯 Coverage Threshold Check" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
@@ -182,7 +201,7 @@ jobs:
       continue-on-error: true
     
     - name: ⚠️ Coverage not available
-      if: hashFiles('./coverage/coverage.xml') == ''
+      if: steps.locate-coverage.outputs.found != 'true'
       run: |
         echo "## ⚠️ Coverage Report Unavailable" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY

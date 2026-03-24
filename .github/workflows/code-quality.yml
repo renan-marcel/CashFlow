@@ -104,7 +104,7 @@ jobs:
         echo "- **Codecov**: https://codecov.io/gh/${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
         echo "- **This Workflow**: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
 
-  sonarqube-analysis:
+  sonarcloud-analysis:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     
@@ -119,47 +119,50 @@ jobs:
       with:
         dotnet-version: '10.0.x'
     
-    - name: 🔨 Setup Java for SonarQube
+    - name: 🔨 Setup Java for SonarCloud
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
     
-    - name: 🔊 Setup SonarQube Scanner
+    - name: 🔊 Setup Sonar Scanner
       run: |
         dotnet tool install --global dotnet-sonarscanner
     
     - name: 📦 Restore dependencies
       run: dotnet restore
     
-    - name: 🔍 Run SonarQube analysis
+    - name: 🔍 Run SonarCloud analysis
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      if: env.SONAR_TOKEN != ''
+      if: ${{ secrets.SONAR_TOKEN != '' }}
       run: |
         dotnet sonarscanner begin \
           /k:"CashFlow" \
           /o:"carrefour" \
-          /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
+          /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.cs.opencover.reportsPaths="coverage/**/coverage.opencover.xml"
         
         dotnet build --no-restore --configuration Release
-        dotnet test --no-build --configuration Release
+        dotnet test \
+          --no-build \
+          --configuration Release \
+          --results-directory ./coverage \
+          --collect:"XPlat Code Coverage" \
+          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         
         dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       continue-on-error: true
     
-    - name: ℹ️ SonarQube Note
+    - name: ℹ️ SonarCloud Note
       if: success()
       run: |
-        echo "## 🔍 SonarQube Analysis" >> $GITHUB_STEP_SUMMARY
+        echo "## 🔍 SonarCloud Analysis" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**Note**: SonarQube analysis requires:" >> $GITHUB_STEP_SUMMARY
+        echo "**Note**: SonarCloud analysis requires:" >> $GITHUB_STEP_SUMMARY
         echo "1. `SONAR_TOKEN` secret configured in GitHub" >> $GITHUB_STEP_SUMMARY
-        echo "2. `SONAR_HOST_URL` secret configured in GitHub" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "To enable SonarQube:" >> $GITHUB_STEP_SUMMARY
+        echo "To enable SonarCloud:" >> $GITHUB_STEP_SUMMARY
         echo "1. Go to Settings → Secrets and variables → Actions" >> $GITHUB_STEP_SUMMARY
-        echo "2. Add `SONAR_TOKEN` and `SONAR_HOST_URL`" >> $GITHUB_STEP_SUMMARY
+        echo "2. Add `SONAR_TOKEN`" >> $GITHUB_STEP_SUMMARY
