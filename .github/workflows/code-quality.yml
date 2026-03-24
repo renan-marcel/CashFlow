@@ -26,6 +26,7 @@ jobs:
       with:
         dotnet-version: '10.0.x'
         cache: true
+        cache-dependency-path: '**/packages.lock.json'
     
     - name: 📦 Install dependencies
       run: |
@@ -114,7 +115,7 @@ jobs:
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    
+     
     steps:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
@@ -125,6 +126,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
+        cache: true
+        cache-dependency-path: '**/packages.lock.json'
     
     - name: 🔨 Setup Java for SonarCloud
       uses: actions/setup-java@v3
