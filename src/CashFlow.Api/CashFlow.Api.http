@@ -1,0 +1,28 @@
+@CashFlow.Api_HostAddress = http://localhost:5189
+
+### Weather Forecast Endpoints
+GET {{CashFlow.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+### Load Test Endpoints
+
+### Send 1000 messages to RabbitMQ queue
+POST {{CashFlow.Api_HostAddress}}/loadtest/send-messages
+Accept: application/json
+Content-Type: application/json
+
+###
+
+### Get queue status
+GET {{CashFlow.Api_HostAddress}}/loadtest/queue-status
+Accept: application/json
+
+###
+
+### Clear the queue
+DELETE {{CashFlow.Api_HostAddress}}/loadtest/clear-queue
+Accept: application/json
+
+###

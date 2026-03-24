@@ -1,0 +1,54 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+
+# Test Results
+TestResults/
+*.trx
+coverage/
+coverage-results/
+benchmark-results/
+.coverage
+.codecov/
+
+# Code Coverage
+*.opencover.xml
+*.cobertura.xml
+coverage.json
+coverage.xml
+OpenCover.xml
+
+# Report Generator
+report*/
+
+# Codecov
+.codecov_token
+
+# Reports
+reports/
+report-generator/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# OS specific
+.DS_Store
+Thumbs.db

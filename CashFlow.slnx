@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/solution itens/">
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AppHost/CashFlow.AppHost/CashFlow.AppHost.AppHost/CashFlow.AppHost.AppHost.csproj" />
+    <Project Path="src/AppHost/CashFlow.AppHost/CashFlow.AppHost.ServiceDefaults/CashFlow.AppHost.ServiceDefaults.csproj" />
+    <Project Path="src/CashFlow.Api/CashFlow.Api.csproj" />
+    <Project Path="src/CashFlow.Application/CashFlow.Application.csproj" />
+    <Project Path="src/CashFlow.Domain/CashFlow.Domain.csproj" />
+    <Project Path="src/CashFlow.Infrastructure/CashFlow.Infrastructure.csproj" />
+    <Project Path="src/CashFlow.Migrations/CashFlow.Migrations.csproj" />
+    <Project Path="src/CashFlow.Worker/CashFlow.Worker.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CashFlow.IntegrationTests/CashFlow.IntegrationTests.csproj" />
+    <Project Path="tests/CashFlow.UnitTests/CashFlow.UnitTests.csproj" />
+  </Folder>
+</Solution>

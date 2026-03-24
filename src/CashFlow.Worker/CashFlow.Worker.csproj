@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>dotnet-CashFlow.Worker-20b0dcb5-4705-4722-b64e-0b3dcef09a72</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..</DockerfileContext>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\AppHost\CashFlow.AppHost\CashFlow.AppHost.ServiceDefaults\CashFlow.AppHost.ServiceDefaults.csproj" />
+		<ProjectReference Include="..\CashFlow.Infrastructure\CashFlow.Infrastructure.csproj" />
+	</ItemGroup>
+</Project>

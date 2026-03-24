@@ -1,0 +1,53 @@
+codecov:
+  require_ci_to_pass: yes
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+ignore:
+  - "**/*Tests*.cs"
+  - "**/obj/**"
+  - "**/bin/**"
+  - "**/*.Designer.cs"
+  - "**/GlobalUsings.cs"
+
+flags:
+  unittests:
+    carryforward: yes
+    paths:
+      - tests/
+  integration:
+    carryforward: yes
+    paths:
+      - tests/
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: no
+  require_base: no
+  require_head: yes
+  hide_project_coverage: no
+
+github:
+  require_ci_to_pass: true
+
+# Coverage status checks
+status:
+  - type: "patch"
+    branches:
+      - main
+      - develop
+    threshold: 70%
+  
+  - type: "project"
+    branches:
+      - main
+    target: 75%
+    threshold: 5%
+
+# Comparação com baseline
+compare:
+  - auto

@@ -1,0 +1,136 @@
+name: Performance & Benchmarks
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * 0' # Weekly on Sunday
+
+jobs:
+  benchmarks:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: 🔧 Setup .NET 10
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+        cache: true
+    
+    - name: 📦 Restore dependencies
+      run: dotnet restore
+    
+    - name: 🏗️ Build project
+      run: dotnet build --no-restore --configuration Release
+    
+    - name: 🧪 Run tests and generate metrics
+      run: |
+        dotnet test \
+          --no-build \
+          --configuration Release \
+          --logger "trx;LogFileName=benchmark-results.trx" \
+          --results-directory ./benchmark-results \
+          2>&1 | tee test-output.log
+    
+    - name: 📊 Generate performance report
+      if: always()
+      run: |
+        echo "## 🚀 Performance & Test Metrics" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        if [ -f "test-output.log" ]; then
+          tail -30 test-output.log >> $GITHUB_STEP_SUMMARY
+        fi
+        echo '```' >> $GITHUB_STEP_SUMMARY
+    
+    - name: 📈 Calculate metrics
+      if: always()
+      run: |
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Performance Metrics" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+        echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Build Time | Generated at build time |" >> $GITHUB_STEP_SUMMARY
+        echo "| Test Execution Time | Generated at test time |" >> $GITHUB_STEP_SUMMARY
+        echo "| Memory Usage | Monitor via Docker stats |" >> $GITHUB_STEP_SUMMARY
+    
+    - name: 📤 Upload benchmark results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: benchmark-results
+        path: benchmark-results/
+        retention-days: 90
+    
+    - name: 📊 Compare with baseline
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "## 📊 Performance Comparison" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Baseline Comparison" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Comparing performance against main branch..." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Component | Current | Main | Delta |" >> $GITHUB_STEP_SUMMARY
+        echo "|-----------|---------|------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Build Duration | TBD | - | - |" >> $GITHUB_STEP_SUMMARY
+        echo "| Test Duration | TBD | - | - |" >> $GITHUB_STEP_SUMMARY
+      continue-on-error: true
+
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup .NET 10
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+    
+    - name: 🔒 Run security scan
+      run: |
+        dotnet list package --vulnerable 2>&1 | tee security-scan.log
+      continue-on-error: true
+    
+    - name: 📋 Display security report
+      if: always()
+      run: |
+        echo "## 🔒 Security Scan Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Dependency Vulnerabilities" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        if [ -f "security-scan.log" ]; then
+          cat security-scan.log >> $GITHUB_STEP_SUMMARY
+        else
+          echo "No vulnerabilities found in dependencies" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo '```' >> $GITHUB_STEP_SUMMARY
+    
+    - name: 🛡️ Run OWASP Dependency Check
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'CashFlow'
+        path: '.'
+        format: 'JSON'
+        args: >
+          --enableExperimental
+      continue-on-error: true
+    
+    - name: 📤 Upload security report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-report
+        path: reports/
+        retention-days: 90

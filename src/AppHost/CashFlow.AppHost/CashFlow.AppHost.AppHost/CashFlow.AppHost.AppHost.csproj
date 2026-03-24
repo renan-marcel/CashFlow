@@ -1,0 +1,23 @@
+﻿<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UserSecretsId>33f8a9f6-0294-4f02-bffa-37e7d5832a13</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\CashFlow.Api\CashFlow.Api.csproj" />
+		<ProjectReference Include="..\..\..\CashFlow.Worker\CashFlow.Worker.csproj" />
+		<ProjectReference Include="..\..\..\CashFlow.Migrations\CashFlow.Migrations.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting.AppHost" />
+		<PackageReference Include="Aspire.Hosting.RabbitMQ" />
+		<PackageReference Include="Aspire.Hosting.PostgreSQL" />
+	</ItemGroup>
+
+</Project>
