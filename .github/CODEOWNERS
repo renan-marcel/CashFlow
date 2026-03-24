@@ -1,0 +1,59 @@
+# CashFlow Project - Code Owners
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for all files in repo
+* @renan-marcel
+
+# Presentation Layer (Controllers, API Contract)
+/src/CashFlow.Api/ @renan-marcel
+/src/CashFlow.Api/Controllers/ @renan-marcel
+/src/CashFlow.Api/Contracts/ @renan-marcel
+
+# Application Layer (Use Cases, Commands, Queries)
+/src/CashFlow.Application/ @renan-marcel
+
+# Domain Layer (Business Logic, Entities, Validators)
+/src/CashFlow.Domain/ @renan-marcel
+/src/CashFlow.Domain/Ledger/ @renan-marcel
+/src/CashFlow.Domain/Ledger/Validators/ @renan-marcel
+
+# Infrastructure Layer (Persistence, Messaging, Services)
+/src/CashFlow.Infrastructure/ @renan-marcel
+/src/CashFlow.Infrastructure/Persistence/ @renan-marcel
+/src/CashFlow.Infrastructure/Services/ @renan-marcel
+/src/CashFlow.Infrastructure/Messaging/ @renan-marcel
+/src/CashFlow.Infrastructure/Outbox/ @renan-marcel
+/src/CashFlow.Infrastructure/Migrations/ @renan-marcel
+
+# Worker Service (Background Processing)
+/src/CashFlow.Worker/ @renan-marcel
+
+# Database Migrations
+/src/CashFlow.Migrations/ @renan-marcel
+
+# Aspire Orchestration
+/src/AppHost/CashFlow.AppHost/ @renan-marcel
+
+# Tests
+/tests/CashFlow.UnitTests/ @renan-marcel
+/tests/CashFlow.IntegrationTests/ @renan-marcel
+
+# CI/CD Workflows and Build Configuration
+/.github/workflows/ @renan-marcel
+/scripts/ @renan-marcel
+/.github/CODEOWNERS @renan-marcel
+/CashFlow.slnx @renan-marcel
+/Directory.Packages.props @renan-marcel
+/codecov.yml @renan-marcel
+
+# Documentation
+/docs/ @renan-marcel
+/README.md @renan-marcel
+
+# Configuration Files
+/src/CashFlow.Api/appsettings*.json @renan-marcel
+/src/CashFlow.Worker/appsettings*.json @renan-marcel
+/src/CashFlow.Migrations/appsettings*.json @renan-marcel
+/src/CashFlow.Infrastructure/appsettings.json @renan-marcel
+/src/CashFlow.Api/Dockerfile @renan-marcel
+/src/CashFlow.Worker/Dockerfile @renan-marcel
