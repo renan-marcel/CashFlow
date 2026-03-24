@@ -112,6 +112,8 @@ jobs:
   sonarcloud-analysis:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
     steps:
     - name: 📥 Checkout code
@@ -138,9 +140,7 @@ jobs:
       run: dotnet restore
     
     - name: 🔍 Run SonarCloud analysis
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      if: ${{ secrets.SONAR_TOKEN != '' }}
+      if: env.SONAR_TOKEN != ''
       run: |
         dotnet sonarscanner begin \
           /k:"CashFlow" \
