@@ -65,7 +65,7 @@ jobs:
     
     - name: 📤 Upload benchmark results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: benchmark-results
         path: benchmark-results/
@@ -129,7 +129,7 @@ jobs:
     
     - name: 📤 Upload security report
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: security-report
         path: reports/
